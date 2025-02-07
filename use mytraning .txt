@@ -1,0 +1,55 @@
+use mytraning 
+
+select* 
+from [NY-House-Dataset]
+
+ALTER Procedure sp_GetPrice
+@Price int,
+@Locality nvarchar(50)
+--@Beds tinyint
+AS
+Begin 
+  Select* 
+  from [NY-House-Dataset] Where Price = @Price 
+and LOCALITY = @Locality
+end;
+
+
+
+EXEC sp_GetPrice @PRICE =69000, @Locality = 'New york'
+
+--
+alter procedure sp_CountSale 
+As
+Begin
+ Declare @Price bigint
+ select @price = count(*)
+ From [NY-House-Dataset]
+ print 'Total Sales Number:' + Cast(@price as varchar(50))
+ end;
+
+ EXEC sp_CountSale
+ --
+ create procedure sp_optionalp
+ @Price int =Null,
+ @address nvarchar(100)= null,
+ @type nvarchar(50) = null
+ AS
+ BEGIN
+      SELECT * FROM [NY-House-Dataset] WHERE Price =@Price
+	  AND Address = @address
+	  and Type = @type
+	  end;
+
+exec sp_optionalp @price = 69000, @address ='2 E 55th St Unit 908W33', @Type ='Condo for sale'
+---
+alter procedure dbo.spNewprice @Bookertitle nvarchar(100), @Type nvarchar(50)
+as 
+begin 
+  select *
+  from [NY-House-Dataset]
+  where type = isnull (@type,type)
+  and @Bookertitle like '%' + isnull (@Bookertitle , @Bookertitle)+ '%'
+  end
+
+  exec dbo.spNewprice @type = 'Condo for sale',@Bookertitle = 'A'
